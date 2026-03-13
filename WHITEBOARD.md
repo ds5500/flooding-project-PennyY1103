@@ -1,13 +1,13 @@
-# GIS and remote sensing tutorial
+# Note
+This section includes all notes related to this project. 
+
+## GIS and remote sensing tutorial
 - [applied remote sensing training program](https://arset.unhosting.site/)
 	- https://www.earthdata.nasa.gov/data/projects/arset/learn
 - GEE textbook
 - Sentinel Hub resources
 - (optional) [esri academy](https://www.esri.com/training/)
 - (optional) The Canada Centre tutorials
-
-# Note - Technical
-This section includes all technical notes related to this project. 
 ## Conda Environment
 ### conda-forge versus defaults
 
@@ -21,4 +21,7 @@ This section includes all technical notes related to this project.
 - Q - I have two channels in one environment.yml. Is it common?
 	- A - It's common. You may also add `channel_priority: strict` in environment.yml to reduce dependency conflicts or set `conda config --set channel_priority strict` in terminal.
 	
+# Thought
+This section includes all relevant ideas, questions, and the outline for potential improvements.
 
+- Available datasets
