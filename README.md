@@ -1,8 +1,14 @@
-# Automated Assessment of Inland flooding from Satellite Observations
+# Automated Assessment of Inland Flooding Using Unsupervised Image Segmentation
 
-This project focuses on developing a data-processing pipeline and applying a machine learning–based algorithm to support automated assessment of inland flooding using satellite observations. Satellite images collected before, during, and after flood events are analyzed, and the K-means clustering method is used to identify flooded areas. The goal is to explore whether this approach can improve flood detection and provide a more consistent method for mapping flood extent. The results may also provide insights for flood detection using images collected from drone-based observations.
+This project investigates automated detection of inland flooding from satellite imagery using image segmentation techniques. A data-processing pipeline was developed to collect flood event observations, retrieve corresponding satellite imagery, and analyze the images using unsupervised machine learning.
 
-While the project initially targeted Maine, it has been expanded to include in the New England Region with similar flood characteristics. 
+The analysis focuses on Sentinel-2 optical imagery captured before, during, and after flood events. The K-means clustering method is applied to segment satellite images and identify potential flooded areas. This approach is motivated by the presence of sediment-rich floodwater commonly observed during flood events in Maine. Because this floodwater often appears visually distinct in optical imagery, it may be possible to separate flooded areas from surrounding land cover using color-based image segmentation.
+
+Based on this observation, the project evaluates whether segmentation of optical imagery can support a simple and automated approach for mapping flood extent. The workflow integrates flood event datasets from the USGS, satellite imagery retrieved through Google Earth Engine, and Python-based geospatial analysis to construct a reproducible flood assessment pipeline.
+
+While the project initially focused on flood events in Maine, the study area was later expanded to include the broader New England region, where flood events often exhibit similar hydrological characteristics.
+
+The results provide insight into the possibility of using optical image segmentation for flood detection and may also inform future exploration of similar approaches using imagery collected from drone-based platforms.
 
 ## Primary Deliverables
 - [README.md](README.md) - An overview of the project, including step-by-step [instructions](README.md#instruction) to replicate the results;

@@ -11,17 +11,19 @@ This section includes all notes related to this project.
 ## Conda Environment
 ### conda-forge versus defaults
 
-| \ | defaults | conda-forge |
-|---|----------|-------------|
-| maintainer | Anaconda, inc. | open-source community|
-| package availability | smaller set of packages | much larger ecosystem |
-| update speed | slower | faster |
+| \                      | defaults                          | conda-forge                                   |
+| ---------------------- | --------------------------------- | --------------------------------------------- |
+| maintainer             | Anaconda, inc.                    | open-source community                         |
+| package availability   | smaller set of packages           | much larger ecosystem                         |
+| update speed           | slower                            | faster                                        |
 | dependency consistency | packages are built independently. | packages are built in a coordinated ecosystem |
 
 - Q - I have two channels in one environment.yml. Is it common?
 	- A - It's common. You may also add `channel_priority: strict` in environment.yml to reduce dependency conflicts or set `conda config --set channel_priority strict` in terminal.
-	
+
 # Thought
 This section includes all relevant ideas, questions, and the outline for potential improvements.
 
 - Available datasets
+- Comparison between my approach and ChatGPT/Claude
+- 
