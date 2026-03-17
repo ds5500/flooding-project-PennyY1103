@@ -26,4 +26,7 @@ This section includes all relevant ideas, questions, and the outline for potenti
 
 - Available datasets
 - Comparison between my approach and ChatGPT/Claude
-- 
+# Issue
+- 3/17
+	- Original STN data portal https://stn.wim.usgs.gov/STNDataPortal/ - error page not found
+		- The API call is not affected

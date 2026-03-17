@@ -1,5 +1,5 @@
 """
-This script is used to collect and preprocess flood event observations (high-water marks) 
+This script is used to collect and preprocess flood event observations from high-water marks
 documented in STN Flood Event Data Portal(https://stn.wim.usgs.gov/STNDataPortal/).
 
 This script includes the following steps:
@@ -29,7 +29,7 @@ stn_raw = stn_utils.collect_stn(area_list, stn_raw_file)
 
 # step 2 - preprocess high-water marks
 # stn_mod = stn_utils.preprocess_stn(stn_raw, attr_list, check_list, date_threshold, stn_mod_file, explore=True) # used for exploration without saving the file
-stn_mod = stn_utils.preprocess_stn(stn_raw, attr_list, check_list, date_threshold, stn_mod_file)
+#stn_mod = stn_utils.preprocess_stn(stn_raw, attr_list, check_list, date_threshold, stn_mod_file)
 
 # complete and calculate the runtime
 print('\nCOMPLETE - STN FLOOD EVENT DATA COLLECTION AND PREPROCESSING')
