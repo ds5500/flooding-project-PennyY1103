@@ -1,12 +1,10 @@
 # Automated Flood Extent Mapping Using Unsupervised Image Segmentation
 
-This project investigates automated detection of flooding from satellite imagery using image segmentation. A data-processing pipeline was developed to collect flood event observations, retrieve corresponding satellite imagery, and analyze the images using unsupervised machine learning.
+This project explores whether unsupervised image segmentation can provide a simple and automated approach to flood detection from satellite imagery. 
 
-Sentinel-2 optical imagery captured during flood events is compared with images from before and after flood events. Because flood events in Maine often have sediment-rich floodwater which appears visually distinct, color-based segmentation may be able to extract flooded areas. Images with sufficient clarity are processed through a K-means clustering model. This project evaluates whether this simple and automated approach can reliably map flood extent.
+A data pipeline was developed to collection flood event records, retrieve corresponding Sentinel-2 imagery (before, during, and after events), and process images during events through K-means clustering. The study focuses on flood events in Maine and the broader New England region, where sediment-rich floodwater often appears visually distinct from surrounding land and water. 
 
-While the project initially focused on flood events in Maine, the study area was later expanded to include the broader New England region, where flood events often exhibit similar hydrological characteristics.
-
-The results offer insight into the possibility of using optical image segmentation for flood detection and may also inform future exploration of similar approaches using imagery collected from drone-based platforms.
+This project evaluates how well this color-based clustering approach can identify flooded areas without requiring labeled training data. The findings may offer insights for future exploration of similar approaches using drone imagery. 
 
 ## Primary Deliverables
 - [README.md](README.md) - An overview of the project, including step-by-step [instructions](README.md#instruction) to replicate the results;
@@ -45,7 +43,7 @@ _Note: The [data](https://drive.google.com/drive/folders/1iFKHeHfNnRrpxUlsN3PIxY
 Flood event data is derived from two primary sources: high-water marks available through the USGS STN Flood Event Data Portal and high-water levels extracted from real-time gauge data provided by USGS Water Data Services. 
 
 #### High-water marks
-[STN flood event database](https://stn.wim.usgs.gov/STNDataPortal/) is the primary source for observations documenting [high-water marks](https://www.usgs.gov/special-topics/water-science-school/science/high-water-marks-and-flooding) during flood events. 
+[STN flood event database](https://stn.wim.usgs.gov/STNServices/Documentation/home) is the primary source for observations documenting [high-water marks](https://www.usgs.gov/special-topics/water-science-school/science/high-water-marks-and-flooding) during flood events. 
 
 To collect and preprocess flood event data from the STN database, use the following command (estimated runtime: < 1 minute):
 ```
@@ -53,7 +51,7 @@ make stn
 ```
 
 #### High-water levels
-[USGS National Water Information System](https://waterdata.usgs.gov/nwis) is another source for flood event data by extracting real-time gauge water levels above the moderate flood stage. In this project,  when the water level of a gauge is above the moderate flood stage, it's considered as a flood event observation. 
+[USGS National Water Information System](https://waterdata.usgs.gov/nwis) is another source for flood event data by extracting real-time gauge water levels above the moderate flood stage. In this project,  when the water level of a gauge is above the moderate flood stage, it's considered as a flood event observation. This threshold is selected based on the definition of moderate flood stage (some inundation of structures and roads near the stream). 
 
 To collect and preprocess gauge water levels above the [moderate flood stage](https://www.weather.gov/aprfc/terminology#:~:text=Moderate%20Flooding), use the following command (estimated runtime: 30-40 minutes):
 ```

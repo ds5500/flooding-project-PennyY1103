@@ -121,49 +121,53 @@ The area of interest is the New England Region, including Connecticut, Maine, Ma
 The USGS Short-Term Network (STN) Flood Event Data Portal includes high-water marks which are the evidence of a flood event. USGS also provide an interactive website called [Flood Event Viewer](https://stn.wim.usgs.gov/FEV/) to explore the flood events. To understand more about high-water mark and its importance, we can check [High-Water Marks and Flooding](https://www.usgs.gov/special-topics/water-science-school/science/high-water-marks-and-flooding) and [A USGS guide for finding and interpreting high-water marks](https://www.youtube.com/watch?v=uZYRQLMcVOA).
 
 #### HWM dataset overview
-In this project, the downloaded original dataset (53 x 3502) has 53 attributes:
+In this project, the downloaded original dataset (53 x 4284) has 53 attributes:
 ```
 high water marks dataset attributes:
  ['latitude', 'longitude', 'eventName', 'hwmTypeName', 'hwmQualityName', 'verticalDatumName', 'verticalMethodName', 'approvalMember', 'markerName', 'horizontalMethodName', 'horizontalDatumName', 'flagMemberName', 'surveyMemberName', 'site_no', 'siteDescription', 'sitePriorityName', 'networkNames', 'stateName', 'countyName', 'siteZone', 'sitePermHousing', 'site_latitude', 'site_longitude', 'hwm_id', 'waterbody', 'site_id', 'event_id', 'hwm_type_id', 'hwm_quality_id', 'latitude_dd', 'longitude_dd', 'survey_date', 'elev_ft', 'vdatum_id', 'vcollect_method_id', 'bank', 'marker_id', 'hcollect_method_id', 'hwm_environment', 'flag_date', 'stillwater', 'hdatum_id', 'hwm_label', 'files', 'hwm_notes', 'hwm_locationdescription', 'height_above_gnd', 'flag_member_id', 'survey_member_id', 'uncertainty', 'hwm_uncertainty', 'approval_id', 'peak_summary_id']
 ```
 
-The preprocessed dataset (8 x 889) has 8 attributes (7 from the original dataset and 1 created during preprocessing):
+The preprocessed dataset (8 x 1293) has 8 attributes (7 from the original dataset and 1 created during preprocessing):
 - `id` (formerly `hwm_id`) - a unique identifier for each high-water mark
-- `event` (formerly `eventName`) - the category of the flood event
+- `event` (formerly `eventName`) - the name of each flood event
 - `latitude` and `longitude` - the geographical coordinates of each high-water mark
 - `state` and `county` (formerly `stateName` and `countyName`) - the state and county where each high-water mark is located
-- `note` (formerly `hwm_locationdescription`) - a comment or description related to the high-water mark
 - `source`: a newly created label to identify the source of each high-water mark
 
 #### Date selection `date_threshold`
 The flood events in original STN dataset include:
 ```
-['2021 Henri', '2012 Sandy', '2018 March Extratropical Cyclone', '2010 March - April RI MA Flood', '1978 Feb Extratropical Cyclone', '1991 October Extratropical Cyclone', '2018 January Extratropical Cyclone', '2011 Irene', '2023 July MA NY VT Flood', '2023 December East Coast Cyclone']
+['2021 Henri', '2012 Sandy', '2018 March Extratropical Cyclone', '2010 March - April RI MA Flood', '1987 April Maine Flood', '1978 Feb Extratropical Cyclone', '1991 October Extratropical Cyclone', '2023 December East Coast Cyclone', '2018 January Extratropical Cyclone', '2011 Irene', '2023 July MA NY VT Flood']
 ```
 
-However, the selected satellite is [Sentinel-2](https://developers.google.com/earth-engine/datasets/catalog/sentinel-2). Sentinel-2 (Level-1C) was launched in 2015. As a result, high-water marks before 2015 will not be included. Additionally, based on the output above, the earliest flood event after 2015 occurred in 2018. Given this, we can focus on the more precise Sentinel-2 Level-2A dataset, which has been available since March 28, 2017. This date (2017-03-28) will be the starting point for collecting high-water levels.
+However, the selected satellite is [Sentinel-2](https://developers.google.com/earth-engine/datasets/catalog/sentinel-2). Sentinel-2 (Level-1C) was launched in 2015. As a result, high-water marks before 2015 will not be included. Additionally, based on the output above, the earliest flood event after 2015 occurred in 2018. Given this, we can focus on the more processed Sentinel-2 Level-2A data product, which has been available since March 28, 2017. This date (2017-03-28) will be the starting point for collecting high-water levels.
 
-| Event | Date |
-|-------|------|
-| [2018 January Extratropical Cyclone](https://en.wikipedia.org/wiki/January_2018_North_American_blizzard) | 2018-01-02 (formed) - 2018-01-06 (dissipated) |
-| [2018 March Extratropical Cyclone](https://en.wikipedia.org/wiki/March_1%E2%80%933,_2018_nor%27easter) | 2018-03-01 (formed) - 2018-03-05 (dissipated) |
-| [2021 Henri](https://www.nhc.noaa.gov/data/tcr/AL082021_Henri.pdf) | 2021-08-15 (formed) - 2021-08-23 (dissipated) |
+After removing the flood event before the selected date, the flood event list becomes:
+```
+['2021 Henri', '2018 March Extratropical Cyclone', '2023 December East Coast Cyclone', '2018 January Extratropical Cyclone', '2023 July MA NY VT Flood']
+```
+#### Date selection `flood_event_periods` in `global_utils.py`
+A dictionary defines the start and end dates for each flood event, based on relevant reports. These dates determine the time window used for satellite imagery collection. 
+
+| Event                                                                                                                                 | Date                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| [2018 January Extratropical Cyclone](https://en.wikipedia.org/wiki/January_2018_North_American_blizzard)                              | 2018-01-02 (formed) - 2018-01-06 (dissipated) |
+| [2018 March Extratropical Cyclone](https://en.wikipedia.org/wiki/March_1%E2%80%933,_2018_nor%27easter)                                | 2018-03-01 (formed) - 2018-03-05 (dissipated) |
+| [2021 Henri](https://www.nhc.noaa.gov/data/tcr/AL082021_Henri.pdf)                                                                    | 2021-08-15 (formed) - 2021-08-23 (dissipated) |
 | [2023 July MA NY VT Flood](https://www.weather.gov/btv/The-Great-Vermont-Flood-of-10-11-July-2023-Preliminary-Meteorological-Summary) | 2023-07-10 (formed) - 2023-07-11 (dissipated) |
-| [2023 December East Coast Cyclone](https://cw3e.ucsd.edu/wp-content/uploads/2023/12/20Dec2023_Summary/20231218EastCoast.pdf) | 2023-12-17 (formed) - 2023-12-18 (dissipated) |
+| [2023 December East Coast Cyclone](https://cw3e.ucsd.edu/wp-content/uploads/2023/12/20Dec2023_Summary/20231218EastCoast.pdf)          | 2023-12-17 (formed) - 2023-12-18 (dissipated) |
 
-#### Duplicates check `latitude`, `longitude`, and `event`
-Firstly, around 200 observations were removed due to duplicates after dropping the `files` attribute representing high-water mark files (primarily photos). These files can be viewed on the [STN Flood Event Viewer](https://stn.wim.usgs.gov/FEV/#2023JulyMANYVTFlood), but cannot be downloaded directly using `requests`. 
+#### Duplicates check in high water mark dataset 
+Originally, there're 4284 high water marks. After the preprocessing step, 1293 high water marks are kept. A key task in using STN high-water marks is to retrieve corresponding satellite images based on the location and date of the high-water marks. Therefore, it's crucial to avoid collecting duplicate locations for the same flood event.
 
-Secondly, approximately 2,400 observations were removed due to duplicate combinations of `latitude`, `longitude`, and `event`. A key task in using STN high-water marks is to retrieve corresponding satellite images based on the location and date of the high-water marks. Therefore, it's crucial to avoid collecting duplicate locations for the same flood event.
-
-Also, further exploration of the duplicates in `latitude`, `longitude`, and `event` reveals that a single location might have multiple high-water marks with different `elevation` values. Below is the first 4 rows of duplicate values:
+Duplicate entries based on `latitude`, `longitude`, and `event` were investigated. A single location may have multiple high-water mark records due to different survey methods or varying elevation values. For this analysis, only the first observation per location-event pair is kept. The following table shows the first four such records:
 ```
 duplicates in ['event', 'latitude', 'longitude']:
-          id       event state      county   latitude  longitude                                               note source
-0     40933  2021 Henri    CT   Middlesex  41.281522 -72.283981                                                NaN    stn
-1     40934  2021 Henri    CT   Middlesex  41.281522 -72.283981                                                NaN    stn
-2     40935  2021 Henri    CT   Middlesex  41.281522 -72.283981                                                NaN    stn
-3     40936  2021 Henri    CT   Middlesex  41.281522 -72.283981                                                NaN    stn
+          id       event state      county   latitude  longitude source
+0     40933  2021 Henri    CT   Middlesex  41.281522 -72.283981    stn
+1     40934  2021 Henri    CT   Middlesex  41.281522 -72.283981    stn
+2     40935  2021 Henri    CT   Middlesex  41.281522 -72.283981    stn
+3     40936  2021 Henri    CT   Middlesex  41.281522 -72.283981    stn
 ```
 
 The first four high-water marks has the same `event`, `latitude`, and `longitude`. Below is the difference between the first four  rows after examining these high-water marks in the original dataset:
@@ -203,12 +207,6 @@ difference between id 40935 and id 40936:
           self  other
 hwm_id  40935  40936
 ```
-
-These high-water marks can also be examined from the [visualization on Flood Event Viewer](https://stn.wim.usgs.gov/FEV/#2021Henri):
-
-<img src="figs/hwm_duplicate.png" width="400" alt="high-water mark duplicate">
-
-
 ### High-water levels from gauges
 High-water levels from gauges are collected and preprocessed using four steps:
 - collect NWSLI identifiers and descriptions for the gauges from NOAA;
@@ -223,19 +221,19 @@ Exemplar:
 3. [Water Levels - Kennebec River at Augusta with NWSLI ASTM1 and USGSID 01049320](https://waterdata.usgs.gov/monitoring-location/01049320/#parameterCode=00065&period=P7D&showMedian=false) and constructed [URL to retrieve data between 2017-03-28 and 2018-05-23](https://nwis.waterservices.usgs.gov/nwis/iv/?sites=01049320&parameterCd=00065&startDT=2017-03-28T00:00:00.000-05:00&endDT=2018-05-23T23:59:59.999-04:00&siteStatus=all&format=rdb) (date range for demonstration only).
 
 #### HWL dataset overview
-The first dataset `df_gauge_list` represents the gauges (names and nswli identifiers) in the New England Region. This dataset (3 x 515) has 3 attributes:
+The first dataset `df_gauge_list` represents the gauges (names and nswli identifiers) in the New England Region. This dataset (3 x 509) has 3 attributes:
 ```
 gauge list dataset attributes:
  ['nwsli', 'description', 'state']
 ```
 
-The second dataset `df_gauge_info` represents the gauge metadata, specially flood-related information. This dataset (10 x 154) has 10 attributes:
+The second dataset `df_gauge_info` represents the gauge metadata, specially flood-related information. This dataset (10 x 171) has 10 attributes:
 ```
 Guage info dataset attributes:
  ['usgsid', 'nwsli', 'latitude', 'longitude', 'state', 'county', 'minor', 'moderate', 'major', 'floodimpacts']
 ```
 
-The third dataset `df_gauge_raw` represents the real-time water levels above moderate flood stages. This dataset (11 x 218) has 11 attributes:
+The third dataset `df_gauge_raw` represents the real-time water levels above moderate flood stages. This dataset (11 x 445) has 11 attributes:
 ```
 gauge high-water levels dataset attributes:
  ['usgsid', 'event_day', 'tz_cd', 'elev_ft', 'latitude', 'longitude', 'nwsli', 'note', 'state', 'county', 'id']

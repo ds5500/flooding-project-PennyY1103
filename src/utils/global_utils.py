@@ -30,6 +30,9 @@ area_abbr_list = {'Connecticut': 'CT', 'Maine': 'ME',
                   'Massachusetts': 'MA', 'New Hampshire': 'NH', 
                   'Rhode Island': 'RI', 'Vermont': 'VT'}
 
+# attributes selected for this project
+attr_list = attr_list = ['id', 'event', 'state', 'county', 'latitude', 'longitude']
+
 def print_func_header(var):
     """
     Print a header at the beginning of a function to clearly mark the start of a function's execution

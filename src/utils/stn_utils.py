@@ -49,7 +49,7 @@ def collect_stn(area, filename):
     df.to_csv(f'data/df_stn/{filename}.csv', index=False)
     return df
 
-def preprocess_stn(df, attr_list, check_list, date_threshold, filename, explore=False):
+def preprocess_stn(df, attr_list, check_list, date_threshold, filename):
     """
     Preprocess the collected high-water marks 
  
@@ -68,6 +68,9 @@ def preprocess_stn(df, attr_list, check_list, date_threshold, filename, explore=
 
     df_mod = df.copy()
 
+    # check unique flood events before preprocessing
+    print(f'\nunique flood events in STN database before preprocessing:\n', df_mod['eventName'].unique().tolist())
+
     # drop the attribute `files` storing hwm file (images) which is not downloaded using this approach
     df_mod = df_mod.drop(columns=['files'])
 
@@ -75,12 +78,10 @@ def preprocess_stn(df, attr_list, check_list, date_threshold, filename, explore=
     df_mod = df_mod.rename(columns={'eventName': 'event', 
                             'stateName': 'state', 
                             'countyName': 'county', 
-                            'hwm_id': 'id', 
-                            'hwm_locationdescription': 'note'})
+                            'hwm_id': 'id'})
 
     # drop duplicates using all attributes
     df_mod = df_mod.drop_duplicates(keep='first')
-    global_utils.describe_df(df_mod, 'high-water marks after dropping duplicates using all attributes')
 
     # select the specified attributes
     df_mod = df_mod[attr_list]
@@ -89,7 +90,7 @@ def preprocess_stn(df, attr_list, check_list, date_threshold, filename, explore=
     # remove the ` County` suffix in 'county' column
     df_mod.loc[:, 'county'] = df_mod['county'].str.replace(' County', '') 
 
-    # check the duplicates 
+    # check the duplicates based on event and location
     df_duplicates = df_mod[df_mod.duplicated(subset=check_list, keep=False)]
     print(f"\nduplicates in {check_list}:\n", df_duplicates)
 
@@ -105,20 +106,22 @@ def preprocess_stn(df, attr_list, check_list, date_threshold, filename, explore=
             result_compared = original_row.compare(duplicate_row)
             print(f"difference between id {sample_duplicates_id[i]} and id {sample_duplicates_id[j]}:\n", result_compared)
 
-    # check unique flood events
+    # check unique flood events 
     print(f'\nflood events in STN database:\n', df_mod['event'].unique().tolist())
 
-    if not explore:
-        # drop the unwanted duplicates after exploration
-        df_mod = df_mod.drop_duplicates(subset=check_list, keep='first')
+    # drop the unwanted duplicates after exploration
+    df_mod = df_mod.drop_duplicates(subset=check_list, keep='first')
 
-        # select the flood event observations after the specified year threshold
-        df_mod['year'] = df_mod['event'].str.extract(r'(\d{4})').astype(float)
-        df_mod = df_mod[df_mod['year'] >= date_threshold]
-        df_mod = df_mod.drop(columns = ['year']).reset_index(drop=True)
+    # select the flood event observations after the specified year threshold
+    df_mod['year'] = df_mod['event'].str.extract(r'(\d{4})').astype(float)
+    df_mod = df_mod[df_mod['year'] >= date_threshold]
+    df_mod = df_mod.drop(columns = ['year']).reset_index(drop=True)
 
-        # save the modified DataFrame
-        df_mod.to_csv(f'data/df_stn/{filename}.csv', index=False)
+    # check unique flood events after preprocessing
+    print(f'\nunique flood events in STN database after preprocessing:\n', df_mod['event'].unique().tolist())
+
+    # save the modified DataFrame
+    df_mod.to_csv(f'data/df_stn/{filename}.csv', index=False)
 
     global_utils.describe_df(df_mod, 'preprocessed high-water marks')
 
