@@ -132,7 +132,8 @@ The preprocessed dataset (8 x 1293) has 8 attributes (7 from the original datase
 - `event` (formerly `eventName`) - the name of each flood event
 - `latitude` and `longitude` - the geographical coordinates of each high-water mark
 - `state` and `county` (formerly `stateName` and `countyName`) - the state and county where each high-water mark is located
-- `source`: a newly created label to identify the source of each high-water mark
+- `source` - a newly created label to identify the source of each high-water mark
+- `note` (formerly `hwm_locationdescription`) - the description of each high-water mark
 
 #### Date selection `date_threshold`
 The flood events in original STN dataset include:
@@ -239,7 +240,7 @@ gauge high-water levels dataset attributes:
  ['usgsid', 'event_day', 'tz_cd', 'elev_ft', 'latitude', 'longitude', 'nwsli', 'note', 'state', 'county', 'id']
 ```
 
-The last dataset `df_gauge_mod` represents the preprocessed dataset. This dataset (9 x 218) has 9 attributes (7 from the original dataset and 2 created during preprocessing):
+The last dataset `df_gauge_mod` represents the preprocessed dataset. This dataset (9 x 445) has 9 attributes (7 from the original dataset and 2 created during preprocessing):
 - `id` - a unique identifier for each high-water level (nwsli + index)
 - `event` - the created category of the flood event (YYYY-MM)
 - `event_day` - the date of the high-water level (YYYY-MM-DD)

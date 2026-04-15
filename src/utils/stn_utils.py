@@ -78,7 +78,8 @@ def preprocess_stn(df, attr_list, check_list, date_threshold, filename):
     df_mod = df_mod.rename(columns={'eventName': 'event', 
                             'stateName': 'state', 
                             'countyName': 'county', 
-                            'hwm_id': 'id'})
+                            'hwm_id': 'id',
+                            'hwm_locationdescription': 'note'})
 
     # drop duplicates using all attributes
     df_mod = df_mod.drop_duplicates(keep='first')

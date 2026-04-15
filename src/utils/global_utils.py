@@ -31,7 +31,7 @@ area_abbr_list = {'Connecticut': 'CT', 'Maine': 'ME',
                   'Rhode Island': 'RI', 'Vermont': 'VT'}
 
 # attributes selected for this project
-attr_list = attr_list = ['id', 'event', 'state', 'county', 'latitude', 'longitude']
+attr_list = attr_list = ['id', 'event', 'state', 'county', 'latitude', 'longitude', 'note']
 
 def print_func_header(var):
     """
